@@ -6,15 +6,24 @@
 package ventanas;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import java.sql.*;
+import clases.Conexion;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Luis Miguel
  */
 public class Login extends javax.swing.JFrame {
-
+    
+    //enviar dato entre las interfaces
+    public static String user = "";
+    
+    //alojar password
+    String pass = "";
     /**
      * Creates new form Login
      */
@@ -38,9 +47,16 @@ public class Login extends javax.swing.JFrame {
         ImageIcon wallpaper_logo = new ImageIcon("src/images/system.png");
         Icon icono_logo = new ImageIcon(wallpaper_logo.getImage().getScaledInstance(jLabel_Logo.getWidth(),jLabel_Logo.getHeight(),Image.SCALE_DEFAULT));
         jLabel_Logo.setIcon(icono_logo);
-        this.repaint();
-        
+        this.repaint();   
     }
+    
+    //icon Login
+        @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/system.png"));
+        return retValue;
+    }
+
     
     
 
@@ -56,9 +72,13 @@ public class Login extends javax.swing.JFrame {
         jLabel_Logo = new javax.swing.JLabel();
         txt_user = new javax.swing.JTextField();
         txt_password = new javax.swing.JPasswordField();
+        jButton_Acceder = new javax.swing.JButton();
+        jLabel_Footer = new javax.swing.JLabel();
         jLabel_wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
+        setLocationByPlatform(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jLabel_Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 220, 220));
 
@@ -75,10 +95,37 @@ public class Login extends javax.swing.JFrame {
         txt_password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_password.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 370, 210, -1));
+
+        jButton_Acceder.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_Acceder.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jButton_Acceder.setText("Iniciar Sesión");
+        jButton_Acceder.setBorder(null);
+        jButton_Acceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_AccederActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_Acceder, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 420, 210, 35));
+
+        jLabel_Footer.setText("Creado por Luis M. Rodríguez");
+        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, -1, -1));
         getContentPane().add(jLabel_wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton_AccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AccederActionPerformed
+        // TODO add your handling code here:
+        user= txt_user.getText().trim();
+        pass=txt_password.getText().trim();
+        
+        //Validation
+        if(!user.equals("")|| !pass.equals("")){
+            
+        } else{
+            JOptionPane.showMessageDialog(null,"Debes llenar todos los campos");
+        }
+    }//GEN-LAST:event_jButton_AccederActionPerformed
 
     /**
      * @param args the command line arguments
@@ -116,6 +163,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_Acceder;
+    private javax.swing.JLabel jLabel_Footer;
     private javax.swing.JLabel jLabel_Logo;
     private javax.swing.JLabel jLabel_wallpaper;
     private javax.swing.JPasswordField txt_password;
