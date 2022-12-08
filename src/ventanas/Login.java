@@ -115,13 +115,51 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_AccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AccederActionPerformed
-        // TODO add your handling code here:
+
         user= txt_user.getText().trim();
         pass=txt_password.getText().trim();
         
         //Validation
-        if(!user.equals("")|| !pass.equals("")){
-            
+        if(!user.equals("")||!pass.equals("")){
+            try {
+                //objeto conexion
+                Connection cn = Conexion.conectar();
+                
+                //consulta
+                PreparedStatement pst =cn.prepareStatement(
+                        "SELECT tipo_nivel, estatus FROM usuarios WHERE username='"+user+"'AND password='"+pass+"'");
+                
+                //Resultados de la consulta
+                ResultSet rs = pst.executeQuery();
+                
+                //validar coincidencia
+                if(rs.next()){
+                    
+                    //guardar coincidencias
+                    String tipo_nivel=rs.getString("tipo_nivel");
+                    String estatus=rs.getString("estatus");
+                    if(tipo_nivel.equalsIgnoreCase("Administrador")&& estatus.equalsIgnoreCase("Activo")){
+                        dispose(); // cerrar login
+                        new Administrador().setVisible(true);
+                    }else if(tipo_nivel.equalsIgnoreCase("Capturista")&& estatus.equalsIgnoreCase("Activo")){
+                        dispose(); // cerrar login
+                        new Capturista().setVisible(true);
+                    } else if (tipo_nivel.equalsIgnoreCase("Tecnico")&& estatus.equalsIgnoreCase("Activo")){
+                        dispose(); // cerrar login
+                        new Tecnico().setVisible(true);
+                    }
+                }else{
+                   JOptionPane.showMessageDialog(null,"Datos de acceso incorrectos");
+                   
+                   //Limpiar campos
+                   txt_user.setText("");
+                   txt_password.setText("");
+                }
+                
+            } catch (SQLException e) {
+                System.err.println("Error en el boton acceder"+e);
+                JOptionPane.showMessageDialog(null,"Erro al iniciar sesion, contacte con el administrador");
+            }
         } else{
             JOptionPane.showMessageDialog(null,"Debes llenar todos los campos");
         }
