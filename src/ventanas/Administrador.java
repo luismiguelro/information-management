@@ -4,20 +4,71 @@
  * and open the template in the editor.
  */
 package ventanas;
-
+import java.sql.*;
+import clases.Conexion;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.WindowConstants;
 /**
  *
  * @author Luis Miguel
  */
 public class Administrador extends javax.swing.JFrame {
-
+    //enviar dato entre las interfaces
+    public static int sesion_usuario;
+    
+    //alojar datos
+    String user, nombre_usuario;
     /**
      * Creates new form Administrador
      */
     public Administrador() {
         initComponents();
-        setTitle("Administrador");
+        //hacer uso del nombre de usuario ingresado en login
+        user = Login.user;
+        sesion_usuario=1;
+        
+        setSize(650,430);
+        setResizable(false);
+        setTitle("Administrador - Sesion de "+user);
         setLocationRelativeTo(null);
+        
+        //para que el programa no se ejecute en segundo plano
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+        //change imagen
+        ImageIcon wallpaper = new ImageIcon("src/images/wallpaperPrincipal.jpg");
+        
+        //adapt to jlabel
+        Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_wallpaper.getWidth(),jLabel_wallpaper.getHeight(),Image.SCALE_DEFAULT));
+        
+        //add to jlabel
+        jLabel_wallpaper.setIcon(icono);
+        this.repaint();
+        
+        // saber nombre completo del usuario
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement("SELECT nombre_usuario FROM usuarios WHERE username ='"+user+"'");
+            //obtener despues de la ejecucion
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                //recuperar el nombre de usuario
+                nombre_usuario = rs.getString("nombre_usuario");
+                jLabel_NombreUsuario.setText(nombre_usuario);
+                
+            }
+        } catch (Exception e) {
+            System.err.println("Error "+e);
+        }
+    }
+    //cambiar icono interface
+         @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/system.png"));
+        return retValue;
     }
 
     /**
@@ -29,13 +80,13 @@ public class Administrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel_NombreUsuario = new javax.swing.JLabel();
         jButton_RegistrarUsuario = new javax.swing.JButton();
         jButton_GestionarUsuarios = new javax.swing.JButton();
         jButton_Creatividad = new javax.swing.JButton();
         jButton_Capturista = new javax.swing.JButton();
         jButton_Tecnico = new javax.swing.JButton();
         jButton_AcercaDe = new javax.swing.JButton();
+        jLabel_NombreUsuario = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -43,15 +94,12 @@ public class Administrador extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel_Wallpaper = new javax.swing.JLabel();
+        jLabel_wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         setPreferredSize(new java.awt.Dimension(650, 450));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel_NombreUsuario.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jLabel_NombreUsuario.setText("jLabel1");
-        getContentPane().add(jLabel_NombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jButton_RegistrarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addUser.png"))); // NOI18N
         jButton_RegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +125,11 @@ public class Administrador extends javax.swing.JFrame {
         jButton_AcercaDe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/system.png"))); // NOI18N
         getContentPane().add(jButton_AcercaDe, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 120, 100));
 
+        jLabel_NombreUsuario.setBackground(new java.awt.Color(222, 222, 222));
+        jLabel_NombreUsuario.setFont(new java.awt.Font("Arial", 2, 20)); // NOI18N
+        jLabel_NombreUsuario.setText("jLabel1");
+        getContentPane().add(jLabel_NombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
         jLabel1.setText("Registrar Usuario");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
 
@@ -97,7 +150,7 @@ public class Administrador extends javax.swing.JFrame {
 
         jLabel7.setText("Creado por Luis M. Rodriguez");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 390, -1, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 120, 100));
+        getContentPane().add(jLabel_wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -156,6 +209,6 @@ public class Administrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel_NombreUsuario;
-    private javax.swing.JLabel jLabel_Wallpaper;
+    private javax.swing.JLabel jLabel_wallpaper;
     // End of variables declaration//GEN-END:variables
 }
