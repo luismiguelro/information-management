@@ -57,7 +57,7 @@ public class Administrador extends javax.swing.JFrame {
             if(rs.next()){
                 //recuperar el nombre de usuario
                 nombre_usuario = rs.getString("nombre_usuario");
-                jLabel_NombreUsuario.setText(nombre_usuario);
+                jLabel_NombreUsuario.setText("BIENVENIDO "+nombre_usuario+"!");
                 
             }
         } catch (Exception e) {
