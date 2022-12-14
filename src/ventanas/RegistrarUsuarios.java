@@ -174,7 +174,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         int permisos_cmb,validacion=0;
-        String nombre,mail,telefono,username,pass,permisos_string;
+        String nombre,mail,telefono,username,pass,permisos_string = null;
         
         //Recuperar valores
         mail=txt_mail.getText().trim();
@@ -216,26 +216,66 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
             } else if(permisos_cmb==3){
                 permisos_string="Tecnico";
             } 
-            try{
-                  //objeto conexion
-                Connection cn = Conexion.conectar();
+            try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select username from usuarios where username = '" + username + "'");
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                txt_username.setBackground(Color.red);
+                JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible.");
+                cn.close();
+            } else {
                 
-                //consulta
-                PreparedStatement pst =cn.prepareStatement(
-                        "SELECT username FROM usuarios WHERE username='"+username+"'");
+                cn.close();
                 
-                //Resultados de la consulta
-                ResultSet rs = pst.executeQuery();
-                if(rs.next()){
-                   txt_username.setBackground(Color.yellow); 
-                   JOptionPane.showMessageDialog(null,"Nombre usuario no disponible");
-                   cn.close();
+                if (validacion == 0) {
+                    try {
+                        
+                        Connection cn2 = Conexion.conectar();
+                        PreparedStatement pst2 = cn2.prepareStatement(
+                            "INSERT INTO usuarios VALUES (?,?,?,?,?,?,?,?,?)");
+                        
+                        //insertar por cada una de las columnas
+                        pst2.setInt(1, 0);
+                        pst2.setString(2, nombre);
+                        pst2.setString(3, mail);
+                        pst2.setString(4, telefono);
+                        pst2.setString(5, username);
+                        pst2.setString(6, pass);
+                        pst2.setString(7, permisos_string);
+                        pst2.setString(8, "Activo");
+                        pst2.setString(9, user);
+                        
+                        pst2.executeUpdate();
+                        cn2.close();
+                        
+                        Limpiar();
+                        
+                        txt_mail.setBackground(Color.green);
+                        txt_username.setBackground(Color.green);
+                        txt_password.setBackground(Color.green);
+                        txt_nombre.setBackground(Color.green);
+                        txt_telefono.setBackground(Color.green);
+                        
+                        JOptionPane.showMessageDialog(null, "Registro exitoso.");
+                        this.dispose();
+                        
+                    } catch (SQLException e) {
+                        System.err.println("Error en Registrar usuario." + e);
+                        JOptionPane.showMessageDialog(null, "¡¡ERROR al registrar!!, contacte al administrador.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
                 }
-            }catch(SQLException e){
-                System.err.println("Error en el boton acceder"+e);
-                JOptionPane.showMessageDialog(null,"Erro al registrar, contacte con el administrador");
+                
             }
             
+        } catch (SQLException e) {
+            System.err.println("Error en validar nombre de usario." + e);
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar usuario!!, contacte al administrador.");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
   
@@ -292,4 +332,13 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private javax.swing.JTextField txt_telefono;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
+
+   public void Limpiar(){
+       txt_mail.setText("");
+       txt_nombre.setText("");
+       txt_password.setText("");
+       txt_telefono.setText("");
+       txt_username.setText("");
+       cmb_niveles.setSelectedIndex(0);
+   } 
 }
