@@ -98,7 +98,6 @@ public class Administrador extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(getIconImage());
-        setPreferredSize(new java.awt.Dimension(650, 450));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton_RegistrarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addUser.png"))); // NOI18N
@@ -111,6 +110,11 @@ public class Administrador extends javax.swing.JFrame {
 
         jButton_GestionarUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/informationuser.png"))); // NOI18N
         jButton_GestionarUsuarios.setToolTipText("");
+        jButton_GestionarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_GestionarUsuariosActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_GestionarUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 120, 100));
 
         jButton_Creatividad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/creatividad.png"))); // NOI18N
@@ -160,6 +164,12 @@ public class Administrador extends javax.swing.JFrame {
         RegistrarUsuarios registrarUsuarios = new RegistrarUsuarios();
         registrarUsuarios.setVisible(true);
     }//GEN-LAST:event_jButton_RegistrarUsuarioActionPerformed
+
+    private void jButton_GestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GestionarUsuariosActionPerformed
+        // TODO add your handling code here:
+        GestionarUsuarios gestionarusuarios = new GestionarUsuarios ();
+        gestionarusuarios.setVisible(true);
+    }//GEN-LAST:event_jButton_GestionarUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
