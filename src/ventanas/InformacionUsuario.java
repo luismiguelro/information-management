@@ -5,20 +5,56 @@
  */
 package ventanas;
 
+import java.sql.*;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.WindowConstants;
+
 /**
  *
  * @author Luis Miguel
  */
 public class InformacionUsuario extends javax.swing.JFrame {
-
+    
+    String user = "", user_update ="";
+    int ID;
     /**
      * Creates new form InformacionUsuario
      */
     public InformacionUsuario() {
         initComponents();
+        user = Login.user;
+        user_update = GestionarUsuarios.user_update;
+        
+        
+        setSize(630,450);
+        setResizable(false);
+        setTitle("Información del usuario "+user_update+" - Sesion de "+user);
         setLocationRelativeTo(null);
+        
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+         //change imagen
+        ImageIcon wallpaper = new ImageIcon("src/images/wallpaperPrincipal.jpg");
+        
+        //adapt to jlabel
+        Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_wallpaper.getWidth(),jLabel_wallpaper.getHeight(),Image.SCALE_DEFAULT));
+        
+        //add to jlabel
+        jLabel_wallpaper.setIcon(icono);
+        this.repaint();
+       
+        jLabel_titulo.setText(user_update);
     }
+    
+        @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/system.png"));
+        return retValue;
+        
 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +64,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabel_titulo = new javax.swing.JLabel();
         jLabel_Nombre = new javax.swing.JLabel();
         jLabel_Nombre1 = new javax.swing.JLabel();
         jLabel_Nombre2 = new javax.swing.JLabel();
@@ -37,20 +73,24 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_Nombre5 = new javax.swing.JLabel();
         jLabel_Nombre6 = new javax.swing.JLabel();
         txt_nombre = new javax.swing.JTextField();
+        txt_registro = new javax.swing.JTextField();
         txt_mail = new javax.swing.JTextField();
-        txt_mail1 = new javax.swing.JTextField();
-        txt_mail2 = new javax.swing.JTextField();
-        txt_mail3 = new javax.swing.JTextField();
-        txt_mail4 = new javax.swing.JTextField();
-        txt_mail5 = new javax.swing.JTextField();
+        txt_telefono = new javax.swing.JTextField();
+        txt_username = new javax.swing.JTextField();
+        cmb_estatus = new javax.swing.JComboBox<>();
+        cmb_niveles = new javax.swing.JComboBox<>();
+        jButton_actualizar = new javax.swing.JButton();
+        jButton_passwd = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel_wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel1.setText("Informacion del Usuario");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
+        jLabel_titulo.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel_titulo.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        jLabel_titulo.setText("Información del Usuario");
+        getContentPane().add(jLabel_titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, -1, -1));
 
         jLabel_Nombre.setBackground(new java.awt.Color(222, 222, 222));
         jLabel_Nombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -75,17 +115,17 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_Nombre4.setBackground(new java.awt.Color(222, 222, 222));
         jLabel_Nombre4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel_Nombre4.setText("Username");
-        getContentPane().add(jLabel_Nombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, -1, -1));
+        getContentPane().add(jLabel_Nombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(489, 106, 70, -1));
 
         jLabel_Nombre5.setBackground(new java.awt.Color(222, 222, 222));
         jLabel_Nombre5.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel_Nombre5.setText("Estatus");
-        getContentPane().add(jLabel_Nombre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, -1, -1));
+        getContentPane().add(jLabel_Nombre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, -1, -1));
 
         jLabel_Nombre6.setBackground(new java.awt.Color(222, 222, 222));
         jLabel_Nombre6.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel_Nombre6.setText("Registrado por");
-        getContentPane().add(jLabel_Nombre6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, -1, -1));
+        getContentPane().add(jLabel_Nombre6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, -1, -1));
 
         txt_nombre.setBackground(new java.awt.Color(153, 153, 255));
         txt_nombre.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -98,29 +138,46 @@ public class InformacionUsuario extends javax.swing.JFrame {
         });
         getContentPane().add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 210, 20));
 
+        txt_registro.setBackground(new java.awt.Color(153, 153, 255));
+        txt_registro.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txt_registro.setEnabled(false);
+        getContentPane().add(txt_registro, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 240, 210, -1));
+
         txt_mail.setBackground(new java.awt.Color(153, 153, 255));
         txt_mail.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 240, 210, -1));
+        getContentPane().add(txt_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 185, 210, -1));
 
-        txt_mail1.setBackground(new java.awt.Color(153, 153, 255));
-        txt_mail1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_mail1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 210, -1));
+        txt_telefono.setBackground(new java.awt.Color(153, 153, 255));
+        txt_telefono.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 210, -1));
 
-        txt_mail2.setBackground(new java.awt.Color(153, 153, 255));
-        txt_mail2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_mail2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 185, 210, -1));
+        txt_username.setBackground(new java.awt.Color(153, 153, 255));
+        txt_username.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 210, -1));
 
-        txt_mail3.setBackground(new java.awt.Color(153, 153, 255));
-        txt_mail3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_mail3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 210, -1));
+        cmb_estatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        getContentPane().add(cmb_estatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 180, -1, -1));
 
-        txt_mail4.setBackground(new java.awt.Color(153, 153, 255));
-        txt_mail4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_mail4, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 210, -1));
+        cmb_niveles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Capturista", "Tecnico" }));
+        getContentPane().add(cmb_niveles, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 315, -1, -1));
 
-        txt_mail5.setBackground(new java.awt.Color(153, 153, 255));
-        txt_mail5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_mail5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, 210, -1));
+        jButton_actualizar.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_actualizar.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jButton_actualizar.setForeground(new java.awt.Color(0, 0, 0));
+        jButton_actualizar.setText("Actualizar Usuario");
+        jButton_actualizar.setBorder(null);
+        getContentPane().add(jButton_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 300, 210, 35));
+
+        jButton_passwd.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_passwd.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jButton_passwd.setForeground(new java.awt.Color(0, 0, 0));
+        jButton_passwd.setBorder(null);
+        jButton_passwd.setLabel("Restaurar Password");
+        getContentPane().add(jButton_passwd, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 210, 35));
+
+        jLabel2.setText("Creado por Luis M. Rodríguez");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 430, 150, -1));
+        getContentPane().add(jLabel_wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 470));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -165,7 +222,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<String> cmb_estatus;
+    private javax.swing.JComboBox<String> cmb_niveles;
+    private javax.swing.JButton jButton_actualizar;
+    private javax.swing.JButton jButton_passwd;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel_Nombre;
     private javax.swing.JLabel jLabel_Nombre1;
     private javax.swing.JLabel jLabel_Nombre2;
@@ -173,12 +234,12 @@ public class InformacionUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Nombre4;
     private javax.swing.JLabel jLabel_Nombre5;
     private javax.swing.JLabel jLabel_Nombre6;
+    private javax.swing.JLabel jLabel_titulo;
+    private javax.swing.JLabel jLabel_wallpaper;
     private javax.swing.JTextField txt_mail;
-    private javax.swing.JTextField txt_mail1;
-    private javax.swing.JTextField txt_mail2;
-    private javax.swing.JTextField txt_mail3;
-    private javax.swing.JTextField txt_mail4;
-    private javax.swing.JTextField txt_mail5;
     private javax.swing.JTextField txt_nombre;
+    private javax.swing.JTextField txt_registro;
+    private javax.swing.JTextField txt_telefono;
+    private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
