@@ -8,6 +8,8 @@ package ventanas;
 import java.sql.*;
 import clases.Conexion;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
@@ -48,7 +50,7 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
         try {
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("SELECT id_usuario, nombre_usuario, tipo_nivel, estatus FROM usuarios");
+            PreparedStatement pst = cn.prepareStatement("SELECT id_usuario, nombre_usuario, username, tipo_nivel, estatus FROM usuarios");
             //obtener despues de la ejecucion
             ResultSet rs = pst.executeQuery();
             jTable_usuarios = new JTable(model);
@@ -63,6 +65,7 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
             while (rs.next()) {
                 Object[] fila = new Object[5];
+                
                 for (int i = 0; i < 5; i++) {
                     fila[i] = rs.getObject(i + 1);
                 }
@@ -72,6 +75,23 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println("Error " + e);
         }
+        
+        jTable_usuarios.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                //seleccionar columna 2
+                int fila_point=jTable_usuarios.rowAtPoint(e.getPoint());
+                int columna_point=2;
+                
+                if(fila_point > -1){
+                    user_update = (String)model.getValueAt(fila_point, columna_point);
+                    InformacionUsuario informacion_usuario = new InformacionUsuario();
+                    informacion_usuario.setVisible(true);
+                    
+                }
+                
+            }
+        });
 
     }
 
@@ -121,8 +141,8 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 630, 180));
 
         jLabel_footer.setText("Creado por Luis M. Rodríguez");
-        getContentPane().add(jLabel_footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, -1, -1));
-        getContentPane().add(jLabel_wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 340));
+        getContentPane().add(jLabel_footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 270, -1, -1));
+        getContentPane().add(jLabel_wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
