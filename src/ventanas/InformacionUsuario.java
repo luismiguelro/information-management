@@ -6,11 +6,13 @@
 package ventanas;
 
 import clases.Conexion;
+import java.awt.Color;
 import java.sql.*;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -49,8 +51,8 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_titulo.setText(user_update);
         
         try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("SELECT * FROM usuarios WHERE username ='"+user_update+"'");
+            Connection cn3 = Conexion.conectar();
+            PreparedStatement pst = cn3.prepareStatement("SELECT * FROM usuarios WHERE username ='"+user_update+"'");
             //obtener despues de la ejecucion
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
@@ -66,7 +68,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
 
                 
             }
-            cn.close();
+            cn3.close();
         } catch (Exception e) {
             System.err.println("Error "+e);
         }
@@ -96,11 +98,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_Nombre4 = new javax.swing.JLabel();
         jLabel_Nombre5 = new javax.swing.JLabel();
         jLabel_Nombre6 = new javax.swing.JLabel();
-        txt_nombre = new javax.swing.JTextField();
+        txt_username = new javax.swing.JTextField();
         txt_registro = new javax.swing.JTextField();
         txt_mail = new javax.swing.JTextField();
         txt_telefono = new javax.swing.JTextField();
-        txt_username = new javax.swing.JTextField();
+        txt_nombre = new javax.swing.JTextField();
         cmb_estatus = new javax.swing.JComboBox<>();
         cmb_niveles = new javax.swing.JComboBox<>();
         jButton_actualizar = new javax.swing.JButton();
@@ -151,16 +153,16 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_Nombre6.setText("Registrado por");
         getContentPane().add(jLabel_Nombre6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, -1, -1));
 
-        txt_nombre.setBackground(new java.awt.Color(153, 153, 255));
-        txt_nombre.setFont(new java.awt.Font("Arial Narrow", 1, 16)); // NOI18N
-        txt_nombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_nombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txt_nombre.addActionListener(new java.awt.event.ActionListener() {
+        txt_username.setBackground(new java.awt.Color(153, 153, 255));
+        txt_username.setFont(new java.awt.Font("Arial Narrow", 1, 16)); // NOI18N
+        txt_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_username.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txt_username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_nombreActionPerformed(evt);
+                txt_usernameActionPerformed(evt);
             }
         });
-        getContentPane().add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 210, 30));
+        getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 210, 30));
 
         txt_registro.setBackground(new java.awt.Color(153, 153, 255));
         txt_registro.setForeground(new java.awt.Color(0, 0, 0));
@@ -184,11 +186,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         txt_telefono.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(txt_telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 210, 30));
 
-        txt_username.setBackground(new java.awt.Color(153, 153, 255));
-        txt_username.setFont(new java.awt.Font("Arial Narrow", 1, 16)); // NOI18N
-        txt_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_username.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 210, 30));
+        txt_nombre.setBackground(new java.awt.Color(153, 153, 255));
+        txt_nombre.setFont(new java.awt.Font("Arial Narrow", 1, 16)); // NOI18N
+        txt_nombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_nombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 210, 30));
 
         cmb_estatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
         getContentPane().add(cmb_estatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 180, -1, -1));
@@ -201,6 +203,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jButton_actualizar.setForeground(new java.awt.Color(0, 0, 0));
         jButton_actualizar.setText("Actualizar Usuario");
         jButton_actualizar.setBorder(null);
+        jButton_actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_actualizarActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 300, 210, 35));
 
         jButton_passwd.setBackground(new java.awt.Color(153, 153, 255));
@@ -217,9 +224,98 @@ public class InformacionUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txt_nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nombreActionPerformed
+    private void txt_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_nombreActionPerformed
+    }//GEN-LAST:event_txt_usernameActionPerformed
+
+    private void jButton_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualizarActionPerformed
+int permisos_cmb, estatus_cmb, validacion = 0;
+        String nombre, mail, telefono, username, pass, permisos_string = "", estatus_string = "";
+        
+        mail = txt_mail.getText().trim();
+        username = txt_username.getText().trim();
+        nombre = txt_nombre.getText().trim();
+        telefono = txt_telefono.getText().trim();
+        permisos_cmb = cmb_niveles.getSelectedIndex() + 1;
+        estatus_cmb = cmb_estatus.getSelectedIndex() + 1;
+        
+        if(mail.equals("")){
+            txt_mail.setBackground(Color.red);
+            validacion++;
+        }
+        if(username.equals("")){
+            txt_username.setBackground(Color.red);
+            validacion++;
+        }
+        if(nombre.equals("")){
+            txt_nombre.setBackground(Color.red);
+            validacion++;
+        }
+        if(telefono.equals("")){
+            txt_telefono.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if (validacion == 0) {
+            
+            if(permisos_cmb == 1){
+                permisos_string = "Administrador";
+            } else if(permisos_cmb == 2){
+                permisos_string = "Capturista";
+            } else if(permisos_cmb == 3){
+                permisos_string = "Tecnico";
+            }
+            
+            if(estatus_cmb == 1){
+                estatus_string = "Activo";
+            } else if(estatus_cmb == 2){
+                estatus_string = "Inactivo";
+            }
+            
+            try {
+                
+                Connection cn = Conexion.conectar();
+                PreparedStatement pst = cn.prepareStatement(
+                "select username from usuarios where username = '" + username + "' and not id_usuario = '" + ID + "'");
+                
+                ResultSet rs = pst.executeQuery();
+                
+                if (rs.next()) {
+                    
+                    txt_username.setBackground(Color.red);
+                    JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible.");
+                    cn.close();
+                    
+                } else {
+                    
+                    Connection cn2 = Conexion.conectar();
+                    PreparedStatement pst2 = cn2.prepareStatement(
+                    "update usuarios set nombre_usuario=?, email=?, telefono=?, username=?, tipo_nivel=?, estatus=? "
+                            + "where id_usuario = '" + ID + "'");
+                    
+                    pst2.setString(1, nombre);
+                    pst2.setString(2, mail);
+                    pst2.setString(3, telefono);
+                    pst2.setString(4, username);
+                    pst2.setString(5, permisos_string);
+                    pst2.setString(6, estatus_string);
+                    
+                    pst2.executeUpdate();
+                    cn2.close();
+                    
+                    JOptionPane.showMessageDialog(null, "Modificación correcta.");
+                    
+                }
+                
+            } catch (SQLException e) {
+                System.err.println("Erorr al Actualizar." + e);
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
+        }
+                
+    }//GEN-LAST:event_jButton_actualizarActionPerformed
 
     /**
      * @param args the command line arguments
