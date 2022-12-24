@@ -34,7 +34,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         
         setSize(630,450);
         setResizable(false);
-        setTitle("Información del usuario "+user_update+" - Sesion de "+user);
+        setTitle("Cambio de clave para "+user_update+" - Sesion de "+user);
         setLocationRelativeTo(null);
         
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -215,6 +215,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jButton_passwd.setForeground(new java.awt.Color(0, 0, 0));
         jButton_passwd.setBorder(null);
         jButton_passwd.setLabel("Restaurar Password");
+        jButton_passwd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_passwdActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_passwd, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 210, 35));
 
         jLabel2.setText("Creado por Luis M. Rodríguez");
@@ -316,6 +321,13 @@ int permisos_cmb, estatus_cmb, validacion = 0;
         }
                 
     }//GEN-LAST:event_jButton_actualizarActionPerformed
+
+    private void jButton_passwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_passwdActionPerformed
+        // TODO add your handling code here:
+        RestaurarContraseña restaurarContraseña = new RestaurarContraseña();
+        restaurarContraseña.setVisible(true);
+        
+    }//GEN-LAST:event_jButton_passwdActionPerformed
 
     /**
      * @param args the command line arguments
