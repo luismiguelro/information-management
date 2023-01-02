@@ -138,6 +138,8 @@ public class Capturista extends javax.swing.JFrame {
 
     private void jButton_GestionarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GestionarClientesActionPerformed
         // TODO add your handling code here:
+        GestionarClientes gestionarClientes = new GestionarClientes ();
+        gestionarClientes.setVisible(true);
     }//GEN-LAST:event_jButton_GestionarClientesActionPerformed
 
     private void jButton_RegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RegistrarClienteActionPerformed
