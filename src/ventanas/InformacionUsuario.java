@@ -61,7 +61,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
                 txt_mail.setText(rs.getString("email"));
                 txt_telefono.setText(rs.getString("telefono"));
                 txt_username.setText(rs.getString("username"));
-                txt_registro.setText(rs.getString("resgitrado_por"));
+                txt_registro.setText(rs.getString("registrado_por"));
                 
                 cmb_niveles.setSelectedItem(rs.getString("tipo_nivel"));
                 cmb_estatus.setSelectedItem(rs.getString("estatus"));
